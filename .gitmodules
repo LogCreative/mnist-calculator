@@ -1,0 +1,3 @@
+[submodule "samples-for-ai"]
+	path = samples-for-ai
+	url = https://github.com/Microsoft/samples-for-ai.git
