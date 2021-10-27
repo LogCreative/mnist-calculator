@@ -87,5 +87,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExtendedModel\ExtendedModel.csproj">
+      <Project>{fb9e4bf2-9071-4453-8284-ed3e634604e3}</Project>
+      <Name>ExtendedModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
