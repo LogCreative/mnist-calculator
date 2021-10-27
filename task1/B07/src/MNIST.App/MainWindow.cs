@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+// 对于 CPU 运行版本
+// 依赖模型使用 Microsoft.ML.Scoring == 1.1.0
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
