@@ -1,3 +1,6 @@
 [submodule "samples-for-ai"]
 	path = samples-for-ai
 	url = https://github.com/Microsoft/samples-for-ai.git
+[submodule "IronPythonTutorials"]
+	path = IronPythonTutorials
+	url = https://github.com/NeedfulSoftware/IronPythonTutorials.git
