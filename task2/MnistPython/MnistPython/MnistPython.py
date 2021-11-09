@@ -8,6 +8,12 @@ import System.Windows.Forms as WinForms
 from System.Drawing import Size, Point, Bitmap, Graphics, Color, Pen
 from System.Drawing.Drawing2D import LineCap
 
+import sys
+assembly_path = r'..\Model\bin\x64\Debug\Model.dll'
+sys.path.append(assembly_path)
+
+clr.AddReference("Model")
+import Model
 
 class HelloApp(WinForms.Form):
     """A simple hello world app that demonstrates the essentials of

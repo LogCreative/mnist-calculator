@@ -5,14 +5,26 @@ VisualStudioVersion = 15.0.28307.1705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "MnistPython", "MnistPython\MnistPython.pyproj", "{9E21B1BD-0EAA-4C6E-BA81-7EA46B1C31ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{D9873065-F368-490C-810D-A6972016D8F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9E21B1BD-0EAA-4C6E-BA81-7EA46B1C31ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E21B1BD-0EAA-4C6E-BA81-7EA46B1C31ED}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{9E21B1BD-0EAA-4C6E-BA81-7EA46B1C31ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E21B1BD-0EAA-4C6E-BA81-7EA46B1C31ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|x64.ActiveCfg = Debug|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|x64.Build.0 = Debug|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Release|Any CPU.ActiveCfg = Release|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Release|x64.ActiveCfg = Release|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
