@@ -1,9 +1,12 @@
-import clr
+# Pythononnet example is from 
+# https://github.com/pythonnet/pythonnet/blob/master/demo/helloform.py
 
+import clr
 SWF = clr.AddReference("System.Windows.Forms")
 print (SWF.Location)
 import System.Windows.Forms as WinForms
-from System.Drawing import Size, Point
+from System.Drawing import Size, Point, Bitmap, Graphics, Color, Pen
+from System.Drawing.Drawing2D import LineCap
 
 
 class HelloApp(WinForms.Form):
@@ -11,38 +14,62 @@ class HelloApp(WinForms.Form):
        winforms programming and event-based programming in Python."""
 
     def __init__(self):
-        self.Text = "Hello World From Python"
-        self.AutoScaleBaseSize = Size(5, 13)
-        self.ClientSize = Size(392, 117)
-        h = WinForms.SystemInformation.CaptionHeight
-        self.MinimumSize = Size(392, (117 + h))
+        self.Text = "Hand Writing Digit Recognition Based on Python"
+        self.ClientSize = Size(884,613)
+
+        # Create the painting area
+        self.writeArea = WinForms.PictureBox()
+        self.writeArea.Location = Point(9,9)
+        self.writeArea.Size = Size(562,540)
+        self.writeArea.Image = Bitmap(self.writeArea.Width, self.writeArea.Height)
+        self.writeArea.MouseDown += self.writeArea_MouseDown
+        self.writeArea.MouseMove += self.writeArea_MouseMove
+        self.writeArea.MouseUp += self.writeArea_MouseUp
+        self.graphics = Graphics.FromImage(self.writeArea.Image)
+        self.startPoint = Point(0,0)
+
+        # Create the label
+        self.outputText = WinForms.Label()
+        self.outputText.Location = Point(580,9)
+        self.outputText.Size = Size(273,266)
 
         # Create the button
-        self.button = WinForms.Button()
-        self.button.Location = Point(160, 64)
-        self.button.Size = Size(820, 20)
-        self.button.TabIndex = 2
-        self.button.Text = "Click Me!"
+        self.button1 = WinForms.Button()
+        self.button1.Location = Point(580,444)
+        self.button1.Size = Size(272,105)
+        self.button1.Text = "Erase"
+        self.button1.Click += self.clean_click
 
-        # Register the event handler
-        self.button.Click += self.button_Click
+        # Add the controls
+        self.Controls.Add(self.writeArea)
+        self.Controls.Add(self.outputText)
+        self.Controls.Add(self.button1)
 
-        # Create the text box
-        self.textbox = WinForms.TextBox()
-        self.textbox.Text = "Hello World"
-        self.textbox.TabIndex = 1
-        self.textbox.Size = Size(1260, 40)
-        self.textbox.Location = Point(160, 24)
+        self.graphics.Clear(Color.White)
+        self.writeArea.Invalidate()
+        self.outputText.Text = ""
 
-        # Add the controls to the form
-        self.AcceptButton = self.button
-        self.Controls.Add(self.button)
-        self.Controls.Add(self.textbox)
+    def clean_click(self, sender, args):
+        self.graphics.Clear(Color.White)
+        self.writeArea.Invalidate()
+        self.outputText.Text = ""
 
-    def button_Click(self, sender, args):
-        """Button click event handler"""
-        print ("Click")
-        WinForms.MessageBox.Show("Please do not press this button again.")
+    def writeArea_MouseDown(self, sender, args):
+        if args.Button == WinForms.MouseButtons.Left:
+            self.startPoint = args.Location
+
+    def writeArea_MouseMove(self, sender, args):
+        if args.Button == WinForms.MouseButtons.Left:
+            penStyle = Pen(Color.Black, 40)
+            penStyle.StartCap = LineCap.Round
+            penStyle.EndCap = LineCap.Round
+            self.graphics.DrawLine(penStyle, self.startPoint, args.Location)
+            self.writeArea.Invalidate()
+            self.startPoint = args.Location
+
+    def writeArea_MouseUp(self, sender, args):
+        if args.Button == WinForms.MouseButtons.Left:
+            print("Will make the decision.")
 
     def run(self):
         WinForms.Application.Run(self)
