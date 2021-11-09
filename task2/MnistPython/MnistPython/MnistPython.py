@@ -1,4 +1,4 @@
-# Pythononnet example is from 
+# Pythononnet basic example is from 
 # https://github.com/pythonnet/pythonnet/blob/master/demo/helloform.py
 
 import clr
@@ -7,6 +7,9 @@ print (SWF.Location)
 import System.Windows.Forms as WinForms
 from System.Drawing import Size, Point, Bitmap, Graphics, Color, Pen
 from System.Drawing.Drawing2D import LineCap
+from System.Collections.Generic import List, IEnumerable
+from System import Single, Convert
+from collections.abc import Iterable
 
 import sys
 assembly_path = r'..\Model\bin\x64\Debug\Model.dll'
@@ -23,6 +26,8 @@ class HelloApp(WinForms.Form):
         self.Text = "Hand Writing Digit Recognition Based on Python"
         self.ClientSize = Size(884,613)
 
+        self.model = Model.Mnist()
+
         # Create the painting area
         self.writeArea = WinForms.PictureBox()
         self.writeArea.Location = Point(9,9)
@@ -33,6 +38,7 @@ class HelloApp(WinForms.Form):
         self.writeArea.MouseUp += self.writeArea_MouseUp
         self.graphics = Graphics.FromImage(self.writeArea.Image)
         self.startPoint = Point(0,0)
+        self.ImageSize = 28
 
         # Create the label
         self.outputText = WinForms.Label()
@@ -75,7 +81,24 @@ class HelloApp(WinForms.Form):
 
     def writeArea_MouseUp(self, sender, args):
         if args.Button == WinForms.MouseButtons.Left:
-            print("Will make the decision.")
+            clonedBmp = Bitmap(self.writeArea.Image, self.ImageSize, self.ImageSize)
+            image = List[Single](self.ImageSize * self.ImageSize)
+            for y in range(0, self.ImageSize):
+                for x in range(0, self.ImageSize):
+                    color = clonedBmp.GetPixel(x,y)
+                    avg = (color.R + color.G + color.B) / 3.0
+                    rev = 0.5 - avg / 255
+                    image.Add(Single(rev))
+            imageWrapper = List[IEnumerable[Single]]()
+            imageWrapper.Add(image)
+            inferResult = self.model.Infer(imageWrapper)
+            # Get the first of the first in IEnumerator<IEnumerator<T>>
+            # https://stackoverflow.com/a/497275
+            enumer = inferResult.GetEnumerator()
+            enumer.MoveNext()
+            enumer = enumer.Current.GetEnumerator()
+            enumer.MoveNext()
+            self.outputText.Text = Convert.ToString(enumer.Current)
 
     def run(self):
         WinForms.Application.Run(self)
