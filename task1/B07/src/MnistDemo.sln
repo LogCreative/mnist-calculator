@@ -11,16 +11,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Debug|x64.ActiveCfg = Debug|x64
 		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Debug|x64.Build.0 = Debug|x64
+		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Release|Any CPU.ActiveCfg = Release|x64
 		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Release|x64.ActiveCfg = Release|x64
 		{6AA60AF2-C466-4FEA-8D90-C93659291CAC}.Release|x64.Build.0 = Release|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|x64.ActiveCfg = Debug|x64
 		{D9873065-F368-490C-810D-A6972016D8F7}.Debug|x64.Build.0 = Debug|x64
+		{D9873065-F368-490C-810D-A6972016D8F7}.Release|Any CPU.ActiveCfg = Release|x64
 		{D9873065-F368-490C-810D-A6972016D8F7}.Release|x64.ActiveCfg = Release|x64
 		{D9873065-F368-490C-810D-A6972016D8F7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection

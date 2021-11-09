@@ -4,3 +4,6 @@
 [submodule "IronPythonTutorials"]
 	path = IronPythonTutorials
 	url = https://github.com/NeedfulSoftware/IronPythonTutorials.git
+[submodule "pythonnet"]
+	path = pythonnet
+	url = https://github.com/pythonnet/pythonnet.git
