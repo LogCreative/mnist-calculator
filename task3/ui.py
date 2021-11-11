@@ -1,5 +1,14 @@
 from tkinter import *
+from PIL import ImageGrab
+
 root = Tk()
+
+def getter(widget):
+    x=root.winfo_rootx()+widget.winfo_x()
+    y=root.winfo_rooty()+widget.winfo_y()
+    x1=x+widget.winfo_width()
+    y1=y+widget.winfo_height()
+    return ImageGrab.grab().crop((x,y,x1,y1))
 
 class WriteArea(Canvas):
     def __init__(self, master, **kwargs):
@@ -17,18 +26,23 @@ class WriteArea(Canvas):
                          event.x, 
                          event.y, 
                          joinstyle="round", 
-                         width=3,
-                         fill="black")
+                         width=5,
+                         fill="black",
+                         tags="inputs")
         self.startPoint = event.x, event.y
 
     def mouse_up(self, event):
         print("Mouse released at ", event.x, event.y)
+        im = getter(self)
+
+    def clean(self):
+        self.delete("inputs")
 
 c = WriteArea(root, width=600, height=200, bg="white")
 c.pack()
 
 def clean():
-    print("Will be cleaned.")
+    c.clean()
 
 b = Button(root, width=20, height=5, text="Erase", command=clean)
 b.pack()
