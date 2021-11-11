@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageGrab, Image
 from colors import getColor
+from model import infer
 
 root = Tk()
 
@@ -37,6 +38,9 @@ class WriteArea(Canvas):
     def mouse_up(self, event):
         self.allStrokes.append(self.strokePoints.copy())
         self.visualize()
+        groupDict = self.grouping()
+        # Generate group graph
+        
         output_text.set("Prediction")
 
     def clean(self):
@@ -48,27 +52,31 @@ class WriteArea(Canvas):
         for _ in range(1,len(stroke)):
             self.draw_line(prev, stroke[_], fill)
             prev = stroke[_]
+    
+    def grouping(self):
+        self.allStrokes.sort(key=lambda stroke: min([p[0] for p in stroke]))
+        groupDict = {}
+        ggid = 0
+        for _, stroke in enumerate(self.allStrokes):
+            horizontals = [p[0] for p in stroke]
+            leftend = min(horizontals)
+            rightend = max(horizontals)
+            flag = False
+            for gid in groupDict.keys():
+                if rightend <= groupDict[gid][2] or \
+                    (groupDict[gid][2] - leftend) / (groupDict[gid][2] - groupDict[gid][1]) > 0.1:
+                    groupDict[gid][0].append(_)     # contains or mostly overlapped
+                    flag = True
+                    break
+            if flag: continue
+            groupDict[ggid] = [[_], leftend, rightend]
+            ggid += 1
+        return groupDict
 
     def visualize(self):
         self.delete("inputs")
         if visual.get() == "yes": 
-            self.allStrokes.sort(key=lambda stroke: min([p[0] for p in stroke]))
-            groupDict = {}
-            ggid = 0
-            for _, stroke in enumerate(self.allStrokes):
-                horizontals = [p[0] for p in stroke]
-                leftend = min(horizontals)
-                rightend = max(horizontals)
-                flag = False
-                for gid in groupDict.keys():
-                    if rightend <= groupDict[gid][2] or \
-                        (groupDict[gid][2] - leftend) / (groupDict[gid][2] - groupDict[gid][1]) > 0.1:
-                        groupDict[gid][0].append(_)     # contains or mostly overlapped
-                        flag = True
-                        break
-                if flag: continue
-                groupDict[ggid] = [[_], leftend, rightend]
-                ggid += 1
+            groupDict = self.grouping()
             for gid in groupDict.keys():
                 for strokeId in groupDict[gid][0]:
                     self.draw_stroke(self.allStrokes[strokeId],getColor(gid))
