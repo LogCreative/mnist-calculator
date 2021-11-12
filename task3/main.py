@@ -1,5 +1,5 @@
 from tkinter import *
-from PIL import ImageGrab, ImageDraw
+from PIL import ImageGrab, Image, ImageDraw
 from colors import getColor
 from model import infer
 from calc import calc

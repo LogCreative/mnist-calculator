@@ -12,7 +12,7 @@ from System import Single, Convert
 from collections.abc import Iterable
 
 import sys
-assembly_path = r'..\Model\bin\x64\Debug\Model.dll'
+assembly_path = '..\\Model\\bin\\x64\\Release'
 sys.path.append(assembly_path)
 
 clr.AddReference("Model")
