@@ -3,8 +3,9 @@ from PIL import ImageGrab, Image, ImageDraw
 from tensorflow.python.ops.gen_math_ops import exp
 from colors import getColor
 from model import infer
+from calc import calc
 
-WIDTH = 600
+WIDTH = 1000
 HEIGHT = 200
 
 root = Tk()
@@ -15,7 +16,7 @@ def constructInput(groupedStrokes):
     draw = ImageDraw.Draw(groupimg)
     BB = (WIDTH,HEIGHT,0,0)
     for stroke in groupedStrokes:
-        draw.line(stroke,fill=0,width=5)
+        draw.line(stroke,fill=0,width=10)
         # update the bounding box
         BB = (
             min(BB[0], min(p[0] for p in stroke)),
@@ -60,10 +61,12 @@ class WriteArea(Canvas):
         if len(self.strokePoints) > 0:
             self.allStrokes.append(self.strokePoints.copy())
         groupDict = self.grouping()
+        results = []
         for gid in groupDict.keys():
             groupedStrokes = [self.allStrokes[sid] for sid in groupDict[gid][0]]
             result = infer(constructInput(groupedStrokes))
-            print(result)
+            results.append(result)
+        output_text.set(calc(results))
         self.visualize()
 
     def clean(self):
@@ -93,7 +96,7 @@ class WriteArea(Canvas):
             flag = False
             for gid in groupDict.keys():
                 if rightend <= groupDict[gid][2] or \
-                    (groupDict[gid][2] - leftend) / (groupDict[gid][2] - groupDict[gid][1]) > 0.1:
+                    groupDict[gid][2] - leftend > (groupDict[gid][2] - groupDict[gid][1]) * 0.1:
                     # contains or mostly overlapped
                     groupDict[gid][0].append(_)
                     # update the edge point

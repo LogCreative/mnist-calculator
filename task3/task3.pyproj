@@ -19,6 +19,7 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="calc.py" />
     <Compile Include="colors.py" />
     <Compile Include="model.py" />
     <Compile Include="ui.py" />
