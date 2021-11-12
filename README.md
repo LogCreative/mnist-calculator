@@ -44,7 +44,7 @@ python main.py
 
 ### 任务 1
 
-按照文档要求，先训练模型，然后在 Visual Studio 2017 中安装 AI Tools for VS，快速集成模型。
+按照文档要求，先训练模型，然后在 Visual Studio 2017 中安装 AI Tools for VS，快速集成模型。训练扩展模型时，需要先将开源的 [吴沛钢的数据](https://blog.csdn.net/qq_34919953/article/details/81048259) 放入根目录 `input/extension` 文件夹中再训练，并将文件夹名改为 `add`, `minus`, `mul`, `div`, `lp`, `rp`。
 
 ### 任务 2
 
