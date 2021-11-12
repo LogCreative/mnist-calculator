@@ -120,28 +120,28 @@ class WriteArea(Canvas):
             for stroke in self.allStrokes:
                 self.draw_stroke(stroke)
 
-c = WriteArea(root, width=WIDTH, height=HEIGHT, bg="white")
-c.pack()
+canvasWriteArea = WriteArea(root, width=WIDTH, height=HEIGHT, bg="white")
+canvasWriteArea.pack()
 
 output_text = StringVar()
 
 def clean():
-    c.clean()
+    canvasWriteArea.clean()
     output_text.set("")
 
-b = Button(root, width=20, height=5, text="Erase", command=clean)
-b.pack()
+buttonErase = Button(root, width=20, height=5, text="Erase", command=clean)
+buttonErase.pack()
 
-r = Label(root, width=40, height=5, textvariable=output_text)
-r.pack()
+labelResult = Label(root, width=40, height=5, textvariable=output_text)
+labelResult.pack()
 
 visual = StringVar()
 visual.set("no")
 
 def visualize():
-    c.visualize()
+    canvasWriteArea.visualize()
 
-s = Checkbutton(root, width=20, height=5, variable=visual, text="Visualize Stroke Groups", onvalue="yes", offvalue="no", command=visualize)
-s.pack()
+checkbuttonDebug = Checkbutton(root, width=20, height=5, variable=visual, text="Visualize Stroke Groups", onvalue="yes", offvalue="no", command=visualize)
+checkbuttonDebug.pack()
 
 root.mainloop()
