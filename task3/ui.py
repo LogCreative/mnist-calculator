@@ -1,25 +1,37 @@
 from tkinter import *
-from PIL import ImageGrab, Image
+from PIL import ImageGrab, Image, ImageDraw
 from tensorflow.python.ops.gen_math_ops import exp
 from colors import getColor
 from model import infer
 
+WIDTH = 600
+HEIGHT = 200
+
 root = Tk()
 
-def grabArea(widget, lt, rb):
-    x = root.winfo_rootx() + widget.winfo_x() + lt[0]
-    y = root.winfo_rooty() + widget.winfo_y() + lt[1]
-    x1 = root.winfo_rootx() + widget.winfo_x() + rb[0]
-    y1 = root.winfo_rooty() + widget.winfo_y() + rb[1]
-    img = ImageGrab.grab().crop((x,y,x1,y1))
-    w = rb[0] - lt[0]
-    h = rb[1] - lt[1]
+def constructInput(groupedStrokes):
+    # Reconstruct the groupedStrokes in a virtual graph
+    groupimg = Image.new('L',(WIDTH,HEIGHT),255)
+    draw = ImageDraw.Draw(groupimg)
+    BB = (WIDTH,HEIGHT,0,0)
+    for stroke in groupedStrokes:
+        draw.line(stroke,fill=0,width=5)
+        # update the bounding box
+        BB = (
+            min(BB[0], min(p[0] for p in stroke)),
+            min(BB[1], min(p[1] for p in stroke)),
+            max(BB[2], max(p[0] for p in stroke)),
+            max(BB[3], max(p[1] for p in stroke))
+            )
+    groupimg = groupimg.crop(BB)
+    # paste to the new canvas and resize
+    w = BB[2] - BB[0]
+    h = BB[3] - BB[1]
     a = w if w > h else h
-    exp_img = Image.new('F',(a,a),0)
-    exp_img.paste(img, ((a-w)//2,(a-h)//2))
+    exp_img = Image.new('L',(a,a),255)
+    exp_img.paste(groupimg, ((a-w)//2,(a-h)//2))
     exp_img = exp_img.resize((28,28))
-    exp_img.show()
-    return img
+    return exp_img
 
 class WriteArea(Canvas):
     def __init__(self, master, **kwargs):
@@ -49,17 +61,8 @@ class WriteArea(Canvas):
             self.allStrokes.append(self.strokePoints.copy())
         groupDict = self.grouping()
         for gid in groupDict.keys():
-            self.delete("inputs")
-            # the bounding box of this group
-            gl = groupDict[gid][1]
-            gr = groupDict[gid][2]
-            gt = 1000
-            gb = 0
-            for stroke_id in groupDict[gid][0]:
-                self.draw_stroke(self.allStrokes[stroke_id])
-                gt = min(min(p[1] for p in self.allStrokes[stroke_id]), gt)
-                gb = max(max(p[1] for p in self.allStrokes[stroke_id]), gb)
-            result = infer(grabArea(c, [gl,gt], [gr,gb]))
+            groupedStrokes = [self.allStrokes[sid] for sid in groupDict[gid][0]]
+            result = infer(constructInput(groupedStrokes))
             print(result)
         self.visualize()
 
@@ -114,7 +117,7 @@ class WriteArea(Canvas):
             for stroke in self.allStrokes:
                 self.draw_stroke(stroke)
 
-c = WriteArea(root, width=600, height=200, bg="white")
+c = WriteArea(root, width=WIDTH, height=HEIGHT, bg="white")
 c.pack()
 
 output_text = StringVar()

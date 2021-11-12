@@ -13,7 +13,7 @@ infer_method = sess.graph.get_tensor_by_name(
 
 def infer(_input):
     img = np.array(_input)
-    img = 0.5 - img
-    print(img)
-    return 0
-    return sess.run(infer_method, feed_dict={input:_input})
+    img = 0.5 - img / 255
+    img = np.expand_dims(img, 0)
+    img = np.expand_dims(img, -1)
+    return sess.run(infer_method, feed_dict={input:img})[0]
