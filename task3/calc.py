@@ -1,10 +1,10 @@
 import math
 
-ADD     = 10        # +
+ADD     = 10        # + 0
 MINUS   = 11        # -
-MUL     = 12        # ×
+MUL     = 12        # × 1
 DIV     = 13        # ÷
-LP      = 14        # (
+LP      = 14        # ( 2
 RP      = 15        # )
 END     = 16        # \0
 
@@ -40,6 +40,16 @@ def operate(op1, op2, op):
             return math.inf
         else:
             return op1 / op2
+    else:
+        raise Exception("ERROR")
+
+def getPriority(op):
+    if op == ADD or op == MINUS:
+        return 0
+    elif op == MUL or op == DIV:
+        return 1
+    else:
+        return 2
 
 def makeCalculation(results):
     # conflicting naming scheme bans
@@ -59,20 +69,26 @@ def makeCalculation(results):
                     opStack.append(MUL) # handle 2(3) -> 2 * (3)
                 opStack.append(literal)
             else:
-                # push the current num
-                if literal != END:
+                if i>0 and results[i-1]>=10:
+                    # the previous is a symbol
+                    if (results[i-1] == LP and literal == RP):
+                        numStack.append(0) # handle () -> 0
+                        curnum = 0
+                    if (literal == RP or literal == END) and results[i-1]<LP:
+                        return "ERROR"
+                else:
+                    # push the current num
                     numStack.append(curnum)
                     curnum = 0
-                # 2 + (12 + 2 * 3 + 1)
                 if len(opStack) == 0:
                     opStack.append(literal)
                     continue
-                while len(opStack)>0:
+                while True:
                     topOp = opStack[-1]
                     if literal == RP and topOp == LP:
                         topOp = opStack.pop()
                         break
-                    if (topOp - literal >= -1 and topOp != LP) or literal == RP or literal == END:
+                    if (getPriority(topOp) - getPriority(literal) >= 0 and topOp != LP) or literal == RP or literal == END:
                         # topOp is of higher priority or the same priority
                         # or it meets RP or END to collapse
                         # make calculation now
@@ -80,17 +96,21 @@ def makeCalculation(results):
                         try: 
                             op2 = numStack.pop()
                             op1 = numStack.pop()
+                            numStack.append(operate(op1, op2, topOp))
                         except:
                             return "ERROR"
-                        numStack.append(operate(op1, op2, topOp))
                     else:
                         # topOp is of lower priority
                         # push the literal
                         opStack.append(literal)
                         break
-                    if len(opStack)==0 and literal == RP:
-                        # the ) doesn't match (
-                        return "ERROR"
+                    if len(opStack)==0:
+                        if literal == RP:
+                            # the ) doesn't match (
+                            return "ERROR"
+                        else:
+                            opStack.append(literal)
+                            break
     return numStack.pop()
 
 def calc(results):
