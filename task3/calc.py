@@ -1,13 +1,12 @@
-# -*- coding:gbk -*-
-
 import math
 
 ADD     = 10        # +
 MINUS   = 11        # -
-MUL     = 12        # ¡Á
-DIV     = 13        # ¡Â
+MUL     = 12        # Ã—
+DIV     = 13        # Ã·
 LP      = 14        # (
 RP      = 15        # )
+END     = 16        # \0
 
 def getDisplay(results):
     displayText = ""
@@ -17,9 +16,9 @@ def getDisplay(results):
         elif literal == MINUS:
             displayText += "-"
         elif literal == MUL:
-            displayText += "¡Á"
+            displayText += "Ã—"
         elif literal == DIV:
-            displayText += "¡Â"
+            displayText += "Ã·"
         elif literal == LP:
             displayText += "("
         elif literal == RP:
@@ -29,69 +28,70 @@ def getDisplay(results):
     displayText += "="
     return displayText
 
-def getPostfix(results):
-    # translate to postfix expression.
-    postfix = []
-    postStack = []
-    for literal in results:
-        if literal < 10:
-            postfix.append(literal)
-        elif literal == LP:
-            postStack.append(literal)
-        elif literal == RP:
-            while len(postStack)>0:
-                top = postStack.pop()
-                if top == LP:
-                    break
-                postfix.append(top)
+def operate(op1, op2, op):
+    if op == ADD:
+        return op1 + op2
+    elif op == MINUS:
+        return op1 - op2
+    elif op == MUL:
+        return op1 * op2
+    elif op == DIV:
+        if op2 == 0:
+            return math.inf
         else:
-            # operator
-            if len(postStack) == 0:
-                postStack.append(literal)
-                continue
-            while len(postStack)>0:
-                top = postStack[-1]
-                if top - literal <= -2 or top == LP:
-                    postStack.append(literal)
-                    break
-                else:
-                    top = postStack.pop()
-                    postfix.append(top)
-                    if len(postStack) == 0:
-                        postStack.append(literal)
-                        break
-    while len(postStack)>0:
-        postfix.append(postStack.pop())
-    return postfix
-
-def calcPostfix(postfix):
-    # calculate the postfix.
-    calcStack = []
-    for literal in postfix:
-        if literal < 10:
-            calcStack.append(literal)
-        else:
-            try:
-                op2 = calcStack.pop()
-                op1 = calcStack.pop()
-            except:
-                return "ERROR"
-            if literal == ADD:
-                calcStack.append(op1 + op2)
-            elif literal == MINUS:
-                calcStack.append(op1 - op2)
-            elif literal == MUL:
-                calcStack.append(op1 * op2)
-            elif literal == DIV:
-                if op2 == 0:
-                    calcStack.append(math.inf)
-                else:
-                    calcStack.append(op1 / op2)
-    return calcStack.pop()
+            return op1 / op2
 
 def makeCalculation(results):
-    postfix = getPostfix(results)
-    return calcPostfix(postfix)
+    # conflicting naming scheme bans
+    # the use of postfix method.
+    results.append(END)  # add an ending symbol
+    numStack = []
+    opStack = []
+    curnum = 0
+    for i, literal in enumerate(results):
+        if literal < 10: # single number
+            curnum = curnum * 10 + literal
+        else: # operator
+            if literal == LP:
+                if i>0 and results[i-1] < 10:
+                    numStack.append(curnum)
+                    curnum = 0
+                    opStack.append(MUL) # handle 2(3) -> 2 * (3)
+                opStack.append(literal)
+            else:
+                # push the current num
+                if literal != END:
+                    numStack.append(curnum)
+                    curnum = 0
+                # 2 + (12 + 2 * 3 + 1)
+                if len(opStack) == 0:
+                    opStack.append(literal)
+                    continue
+                while len(opStack)>0:
+                    topOp = opStack[-1]
+                    if literal == RP and topOp == LP:
+                        topOp = opStack.pop()
+                        break
+                    if (topOp - literal >= -1 and topOp != LP) or literal == RP or literal == END:
+                        # topOp is of higher priority or the same priority
+                        # or it meets RP or END to collapse
+                        # make calculation now
+                        topOp = opStack.pop()
+                        try: 
+                            op2 = numStack.pop()
+                            op1 = numStack.pop()
+                        except:
+                            return "ERROR"
+                        numStack.append(operate(op1, op2, topOp))
+                    else:
+                        # topOp is of lower priority
+                        # push the literal
+                        opStack.append(literal)
+                        break
+                    if len(opStack)==0 and literal == RP:
+                        # the ) doesn't match (
+                        return "ERROR"
+    return numStack.pop()
 
 def calc(results):
     displayText = getDisplay(results)
