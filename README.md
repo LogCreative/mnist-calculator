@@ -44,12 +44,12 @@ python main.py
 
 ### 任务 1
 
-按照文档要求，先训练模型，然后在 Visual Studio 2017 中安装 AI Tools for VS，快速集成模型。训练扩展模型时，需要先将开源的 [吴沛钢的数据](https://blog.csdn.net/qq_34919953/article/details/81048259) 放入根目录 `input/extension` 文件夹中再训练，并将文件夹名改为 `add`, `minus`, `mul`, `div`, `lp`, `rp`。
+按照文档要求，先训练模型，然后在 Visual Studio 2017 中安装 AI Tools for VS，快速集成模型。训练扩展模型时，需要先将开源的 [吴沛钢的数据](https://blog.csdn.net/qq_34919953/article/details/81048259) 放入根目录 `input/extension` 文件夹中再训练，将文件夹名改为 `add`, `minus`, `mul`, `div`, `lp`, `rp`。
 
 ### 任务 2
 
-在 python 中通过 pythonnet 调用 .NET Framework 中的 dll 库，生成界面以及调用已经处理好的 Model.dll。
+在 python 中通过 pythonnet 调用 .NET Framework 中的 dll 库以生成界面、调用已经处理好的 Model.dll。
 
 ### 任务 3
 
-使用 tkinter 的 Canvas 捕捉鼠标动作，在每次需要识别计算时，将每一个分组在内存的 PIL 图形中重绘，缩放为 28x28 大小的图片喂入训练模型的函数中获得识别结果。计算时先将表达式转化为后缀表达式再运算。
+使用 tkinter 的 Canvas 捕捉鼠标动作，在每次需要识别计算时，将每一个分组笔画在内存的 PIL 图形中重绘，缩放为 28x28 大小的图片后喂入训练好的模型函数中以获得识别结果。计算时将表达式转化为后缀表达式再运算。
