@@ -27,7 +27,8 @@ def constructInput(groupedStrokes):
     # paste to the new canvas and resize
     w = BB[2] - BB[0]
     h = BB[3] - BB[1]
-    a = w if w > h else h
+    # the size of the new image, leave some margin
+    a = w + 5 if w > h else h + 5
     exp_img = Image.new('L',(a,a),255)
     exp_img.paste(groupimg, ((a-w)//2,(a-h)//2))
     exp_img = exp_img.resize((28,28))
