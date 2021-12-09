@@ -120,28 +120,29 @@ class WriteArea(Canvas):
             for stroke in self.allStrokes:
                 self.draw_stroke(stroke)
 
-canvasWriteArea = WriteArea(root, width=WIDTH, height=HEIGHT, bg="white")
-canvasWriteArea.pack()
+if __name__=="__main__":
+    canvasWriteArea = WriteArea(root, width=WIDTH, height=HEIGHT, bg="white")
+    canvasWriteArea.pack()
 
-output_text = StringVar()
+    output_text = StringVar()
 
-def clean():
-    canvasWriteArea.clean()
-    output_text.set("")
+    def clean():
+        canvasWriteArea.clean()
+        output_text.set("")
 
-buttonErase = Button(root, width=20, height=5, text="Erase", command=clean)
-buttonErase.pack()
+    buttonErase = Button(root, width=20, height=5, text="Erase", command=clean)
+    buttonErase.pack()
 
-labelResult = Label(root, width=40, height=5, textvariable=output_text)
-labelResult.pack()
+    labelResult = Label(root, width=40, height=5, textvariable=output_text)
+    labelResult.pack()
 
-visual = StringVar()
-visual.set("no")
+    visual = StringVar()
+    visual.set("no")
 
-def visualize():
-    canvasWriteArea.visualize()
+    def visualize():
+        canvasWriteArea.visualize()
 
-checkbuttonDebug = Checkbutton(root, width=20, height=5, variable=visual, text="Visualize Stroke Groups", onvalue="yes", offvalue="no", command=visualize)
-checkbuttonDebug.pack()
+    checkbuttonDebug = Checkbutton(root, width=20, height=5, variable=visual, text="Visualize Stroke Groups", onvalue="yes", offvalue="no", command=visualize)
+    checkbuttonDebug.pack()
 
-root.mainloop()
+    root.mainloop()
