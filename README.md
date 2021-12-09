@@ -8,10 +8,14 @@
 > ```
 > 运行环境：
 > - **任务 1** Windows (x64)，含有 .NET Framework 4.6.1
-> - **任务 2** Python 3.6.6，已运行 [samples-for-ai](samples-for-ai/installer/install.py) 安装依赖库以及 pythonnet：
+> - **任务 2** Python 3.6.6，已运行 [samples-for-ai](samples-for-ai/installer/install.py) 安装依赖库以及 pythonnet（3.0.0a1）：
 > ```cmd
 > cd pythonnet
 > pip install .
+> ```
+> 如果不想源码编译可以使用
+> ```cmd
+> pip install pythonnet==3.0.0a1
 > ```
 > - **任务 3** 需要安装 tkinter
 > ```cmd
