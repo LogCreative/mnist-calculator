@@ -66,7 +66,7 @@ python main.py
 |loss, lambda=5e-4|minibatch error rate | validation error rate |
 |----|----|---|
 |![](img/loss.svg)|![](img/minibatch_error.svg)|![](img/validation_error.svg)|
-|<center>1.167</center>|<center>1.5%</center>|<center>0.8%</center>|
+|<div align="center">1.167</div>|<div align="center">1.5%</div>|<div align="center">0.8%</div>|
 
 
 test error rate: 0.6%
