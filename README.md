@@ -57,3 +57,16 @@ python main.py
 ### 任务 3
 
 使用 tkinter 的 Canvas 捕捉鼠标动作，在每次需要识别计算时，将每一个分组笔画在内存的 PIL 图形中重绘，缩放为 28x28 大小的图片后喂入训练好的模型函数中以获得识别结果。计算采用了双栈结构，以计算多位整数，并设计了[单元测试](task3/calctest.py)。
+
+## 附：训练指标
+
+在标准训练集上的训练指标略。下面是对于扩展训练集的训练指标。
+
+
+|loss, lambda=5e-4|minibatch error rate | validation error rate |
+|----|----|---|
+|![](img/loss.svg)|![](img/minibatch_error.svg)|![](img/validation_error.svg)|
+|<center>1.167</center>|<center>1.5%</center>|<center>0.8%</center>|
+
+
+test error rate: 0.6%
