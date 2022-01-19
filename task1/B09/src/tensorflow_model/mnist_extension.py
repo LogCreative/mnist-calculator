@@ -422,9 +422,19 @@ def main(_):
               (step, float(step) * BATCH_SIZE / train_size,
                1000 * elapsed_time / EVAL_FREQUENCY))
         print('Minibatch loss: %.3f, learning rate: %.6f' % (l, lr))
-        print('Minibatch error: %.1f%%' % error_rate(predictions, batch_labels))
-        print('Validation error: %.1f%%' % error_rate(
-            eval_in_batches(validation_data, sess), validation_labels))
+        ## Add summary on error
+        minibatch_error = error_rate(predictions, batch_labels)
+        validation_error = error_rate(
+            eval_in_batches(validation_data, sess), validation_labels)
+        print('Minibatch error: %.1f%%' % minibatch_error)
+        print('Validation error: %.1f%%' % validation_error)
+        summary = tf.Summary(
+          value=[
+            tf.Summary.Value(tag='minibatch_error', simple_value=minibatch_error),
+            tf.Summary.Value(tag='validation_error', simple_value=validation_error)
+          ]
+        )
+        writer.add_summary(summary, step)
         sys.stdout.flush()
 
     ### Change original code
